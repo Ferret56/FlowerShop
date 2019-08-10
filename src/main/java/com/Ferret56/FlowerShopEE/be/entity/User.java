@@ -39,6 +39,7 @@ public class User {
     @NotNull
     @NotEmpty
     @Column(name = "role")
+    @Enumerated(EnumType.ORDINAL)
     private UserRoles role;
 
 
