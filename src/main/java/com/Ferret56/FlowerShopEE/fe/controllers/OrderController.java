@@ -11,6 +11,9 @@ import com.Ferret56.FlowerShopEE.be.entity.User.User;
 import com.Ferret56.FlowerShopEE.fe.dto.BasketDTO;
 
 import com.Ferret56.FlowerShopEE.fe.dto.UserDTO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,9 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class OrderController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
+
     @Autowired
     private OrderBusinessService orderBusinessService;
     @Autowired
@@ -39,7 +45,7 @@ public class OrderController {
             try {
                 orderBusinessService.saveItemToBasket(id,amount,session);
             } catch (OrderCreationErrorException e) {
-                e.printStackTrace();
+                LOG.error("Order creation error! "  + e.getMessage());
             }
         }
         return "redirect:/userPage";
@@ -77,7 +83,7 @@ public class OrderController {
             orderBusinessService.buyOrder(orderDaoService.getOrderById(id), session);
 
         } catch (OrderCreationErrorException e) {
-            e.printStackTrace();
+            LOG.error("Order creation error! "  + e.getMessage() );
             redirectAttributes.addFlashAttribute("errorMsg", e.getMessage());
         }
 

@@ -6,6 +6,8 @@ import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.exp.UserLoginEx
 import com.Ferret56.FlowerShopEE.be.entity.User.User;
 import com.Ferret56.FlowerShopEE.be.entity.User.UserRoles;
 import com.Ferret56.FlowerShopEE.fe.dto.UserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,9 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+
     @Autowired
     private UserBusinessService userBusinessService;
     private Mapper mapper = new Mapper();
@@ -46,6 +51,7 @@ public class LoginController {
             return "redirect:/userPage";
         }
         catch (UserLoginException e) {
+           LOG.error("Login error!");
            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
            return "redirect:/login";
         }
