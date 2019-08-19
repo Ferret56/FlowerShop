@@ -1,13 +1,20 @@
-package com.Ferret56.FlowerShopEE.be.entity;
+package com.Ferret56.FlowerShopEE.be.entity.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.math.BigDecimal;
 
 
 @Entity
 @Table(name = "USERS")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"id", "username", "password", "email", "phone", "money", "discount", "role"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,29 +26,21 @@ public class User {
     @Column(name = "password")
     private String password;
     @NotNull
-    @NotEmpty
-    @Pattern(regexp="[A-Za-z0-9._%-+]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")
     @Column(name = "email")
     private String email;
     @NotNull
-    @NotEmpty
-    @Pattern(regexp="(^$|[0-9]{10})")
     @Column(name = "phone")
     private String phone;
     @NotNull
-    @NotEmpty
     @Column(name = "money")
     private BigDecimal money;
     @NotNull
-    @NotEmpty
     @Column(name = "discount")
     private int discount;
     @NotNull
-    @NotEmpty
     @Column(name = "role")
     @Enumerated(EnumType.ORDINAL)
     private UserRoles role;
-
 
     public User(String username, String password,
                 String email,String phone,
