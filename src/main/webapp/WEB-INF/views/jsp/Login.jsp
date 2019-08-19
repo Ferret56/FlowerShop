@@ -30,9 +30,8 @@
             <br/>
             <c:url value="/register" var="registerLink"/>
             <a href="${registerLink}">Registration</a>
-            <!-- <p class="informationMessage">${informationMessage}</p> -->
+            <p class="informationMessage">${errorMessage}</p>
             <p class="informationMessage"><form:errors path="*"/></p>
-            <img src="resources/back.png"/>
         </div>
     </form:form>
 </div>

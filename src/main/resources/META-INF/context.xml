@@ -1,0 +1,10 @@
+<Resource
+        auth="Container"
+        brokerName="MyActiveMQBrokerXML"
+        description="JMS Connection Factory"
+        factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+        name="jms/ConnectionFactory"
+        type="org.apache.activemq.ActiveMQConnectionFactory"
+        useEmbeddedBroker="true"
+        brokerURL="vm://localhost?brokerConfig=xbean:activemq.xml"
+/>

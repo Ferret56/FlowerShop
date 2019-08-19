@@ -6,11 +6,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
-    <context:component-scan base-package="com.Ferret56.FlowerShopEE.fe"/>
+    <mvc:resources mapping="/resources/*" location="/resources/"/>
+    <context:component-scan base-package="com.Ferret56.FlowerShopEE"/>
     <bean id = "resolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/jsp/"/>
         <property name="suffix" value=".jsp"/>
-        </bean>
-    <mvc:resources mapping="/resources/*" location="/resources/"/>
+    </bean>
+
+    <bean id="jmsXaConnectionFactory" class="org.apache.activemq.ActiveMQXAConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+
 
 </beans>

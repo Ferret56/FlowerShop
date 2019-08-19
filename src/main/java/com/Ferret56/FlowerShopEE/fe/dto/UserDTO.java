@@ -1,7 +1,6 @@
 package com.Ferret56.FlowerShopEE.fe.dto;
 
-import com.Ferret56.FlowerShopEE.be.entity.UserRoles;
-
+import com.Ferret56.FlowerShopEE.be.entity.User.UserRoles;
 import java.math.BigDecimal;
 
 public class UserDTO {

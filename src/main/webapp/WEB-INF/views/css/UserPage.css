@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');
+
+body{
+    font-family: 'Roboto';
+    background-image: url(/FlowerShop/resources/img/userPageBack.png);
+    background-repeat: no-repeat;
+    background-size:cover;
+    margin: 0;
+}
+.headline{
+    background: rgba(206,205,210,0.4);
+    width: 100%;
+    height: 55px;
+}
+
+.menu ul{
+    list-style-type:none;
+    padding: 0;
+    margin: 0 auto;
+    width: 800px;
+
+}
+.menu li{
+    display:block;
+    float: left;
+    padding: 10px 30px;
+    min-height: 25px;
+    font-size: 20px;
+    margin-top: 5px;
+    border-radius: 10px;
+}
+
+.menu li a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.menu li:hover{
+    transition: all 0.6s;
+    background-color:beige;
+}
+
+.menu li a:hover{
+    transition: all 0.6s;
+    color: black;
+}
+.UserWelcome{
+    color: #fff;
+    margin-left: 10px;
+}
+
+.Catalog{
+    margin-left: 10px;
+    color: #fff;
+    width: 400px;
+}
+#fndByName{
+    background-color:bisque;
+    cursor:pointer;
+}
+#fndInput{
+    width: 150px;
+}
+#fndByNum{
+    width: 50px;
+}
+#fndByNumBtn{
+    background-color:bisque;
+    cursor:pointer;
+}
+.Catalog table{
+    font-size: 20px;
+    border-collapse: collapse;
+    border-radius: 10px;
+    text-align: center;
+    color:#fff;
+
+}
+.Catalog table th{
+    background: rgba(0,190,255,0.5);
+}
+.OrderChoose{
+    width: 400px;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+.OrderChoose select{
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+#amountFld{
+    width: 5em;
+    font-size: 17px;
+    border-radius: 5px;
+}
+
+#addBtn{
+    border-radius: 5px;
+    font-size: 18px;
+    cursor:pointer;
+    background: rgba(0,198,255,0.7);
+    color: #fff;
+}
+
+.Basket{
+    color: #fff;
+    margin-left: 10px;
+    width: 300px;
+}
+
+.Basket a{
+    color: blueviolet;
+
+}
+
+.Basket table{
+    color:#fff;
+}
+
+#Price{
+    margin-top: 0;
+    margin-bottom:5px;
+}
+
+
+

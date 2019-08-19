@@ -33,6 +33,7 @@
             <c:url value="/login" var="loginLink"/>
             <a href="${loginLink}">Sign in</a>
             <p class="errorMessage"><form:errors path="*"/> </p>
+            <p class="errorMessage">${errorMessage} </p>
             <p class="successMessage">${successMessage}</p>
         </div>
     </form:form>
