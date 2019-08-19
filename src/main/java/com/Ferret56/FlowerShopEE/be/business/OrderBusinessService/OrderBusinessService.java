@@ -42,7 +42,7 @@ public class OrderBusinessService {
                 throw new OrderCreationErrorException("AMOUNT!");
             int discount = ((UserDTO)session.getAttribute("currentUser")).getDiscount();
             basketBusinessService.addOrderItem(new OrderItem(flower,amount), basketDTO);
-            basketDTO.setPrice( basketDTO.getPrice().multiply( BigDecimal.valueOf((float)(100-discount)/100)).setScale(2, BigDecimal.ROUND_HALF_DOWN));
+            basketDTO.setPrice( basketDTO.getPrice().multiply(BigDecimal.valueOf((float)(100-discount)/100)).setScale(2, BigDecimal.ROUND_HALF_DOWN));
         } catch (FlowerNotFoundException e) {
             e.printStackTrace();
         }

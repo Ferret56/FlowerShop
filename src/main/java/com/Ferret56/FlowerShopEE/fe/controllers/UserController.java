@@ -42,7 +42,8 @@ public class UserController {
         if(flowerFilterType == null)
              session.setAttribute("flowerFilter", FlowerFilterType.DEFAULT );
 
-        model.addAttribute("flowerList", mapper.mapList(flowerBusinessService.getFlowers((FlowerFilterType)session.getAttribute("flowerFilter"), session), FlowerDTO.class));
+        model.addAttribute("flowerList", mapper.mapList(flowerBusinessService.getFlowers((FlowerFilterType)session
+                                                        .getAttribute("flowerFilter"), session), FlowerDTO.class));
         return "UserPage";
     }
 

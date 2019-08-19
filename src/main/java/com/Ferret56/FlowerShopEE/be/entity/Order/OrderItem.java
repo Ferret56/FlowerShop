@@ -18,7 +18,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order userOrder;
 
-    @OneToOne
+    @ManyToOne
     private Flower flower;
 
     @Column(name = "amount")

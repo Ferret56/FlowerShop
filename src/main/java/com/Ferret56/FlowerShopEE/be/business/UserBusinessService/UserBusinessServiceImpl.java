@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 @Service
 public class UserBusinessServiceImpl implements UserBusinessService {
 
+    private final BigDecimal INIT_MONEY = BigDecimal.valueOf(2000);
+
     @Autowired
     private UserDaoService userDaoService;
     @Autowired
@@ -50,7 +52,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     public User register(User user, String confirm_password) throws UserRegisterException {
         try {
             userValidator.validate(user, confirm_password);
-            user.setMoney(BigDecimal.valueOf(2000));
+            user.setMoney(INIT_MONEY);
             user.setDiscount(0);
             user.setRole(UserRoles.USER);
             userDaoService.addUser(user);
