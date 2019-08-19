@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<user>
+    <id>27</id>
+    <username>Jake</username>
+    <password>123</password>
+    <email>jake123@mail.ru</email>
+    <phone>89047781145</phone>
+    <money>2000</money>
+    <discount>0</discount>
+    <role>USER</role>
+</user>
