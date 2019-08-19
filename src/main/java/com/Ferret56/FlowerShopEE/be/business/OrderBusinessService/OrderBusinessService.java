@@ -76,8 +76,10 @@ public class OrderBusinessService {
     }
 
     public void closeOrder(Order order){
-            order.setStatus(OrderStatus.CLOSED);
-            order.setOrderCloseDate(new Date());
-            orderDaoService.updateOrder(order);
+            if(order.getStatus().equals(OrderStatus.PAID)) {
+                order.setStatus(OrderStatus.CLOSED);
+                order.setOrderCloseDate(new Date());
+                orderDaoService.updateOrder(order);
+            }
     }
 }
