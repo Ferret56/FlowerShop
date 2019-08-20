@@ -2,9 +2,12 @@ package com.Ferret56.FlowerShopEE.fe.controllers;
 
 
 import com.Ferret56.FlowerShopEE.be.Mapper.Mapper;
+import com.Ferret56.FlowerShopEE.be.access.UserDaoService.UserDaoService;
 import com.Ferret56.FlowerShopEE.be.business.OrderBusinessService.OrderBusinessService;
 import com.Ferret56.FlowerShopEE.be.access.OrderDaoService.OrderDaoService;
 import com.Ferret56.FlowerShopEE.be.business.OrderBusinessService.exp.OrderCreationErrorException;
+import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.UserBusinessService;
+import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.exp.UserNotFoundException;
 import com.Ferret56.FlowerShopEE.be.entity.Order.Order;
 import com.Ferret56.FlowerShopEE.be.entity.Order.OrderStatus;
 import com.Ferret56.FlowerShopEE.be.entity.User.User;
@@ -34,6 +37,9 @@ public class OrderController {
     private OrderBusinessService orderBusinessService;
     @Autowired
     private OrderDaoService orderDaoService;
+
+    @Autowired
+    private UserDaoService userDaoService;
 
     private Mapper mapper = new Mapper();
 
@@ -83,11 +89,14 @@ public class OrderController {
     public String buyOrder (@PathVariable("id")Long id, HttpSession session,
                                        RedirectAttributes redirectAttributes){
         try {
-            orderBusinessService.buyOrder(orderDaoService.getOrderById(id), session);
-
+            UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
+            orderBusinessService.buyOrder(orderDaoService.getOrderById(id), mapper.map(userDTO,User.class));
+            userDTO.setMoney(userDaoService.findUserById(userDTO.getId()).getMoney());
         } catch (OrderCreationErrorException e) {
             LOG.error("Order creation error! "  + e.getMessage() );
             redirectAttributes.addFlashAttribute("errorMsg", e.getMessage());
+        } catch (UserNotFoundException e) {
+            LOG.error("Error");
         }
 
         return "redirect:/viewUnpaidOrders";
