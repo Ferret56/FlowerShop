@@ -33,14 +33,15 @@ public class OrderBusinessService {
     private Mapper mapper = new Mapper();
 
     public void saveItemToBasket(final Long flowerId, final int amount,
-                                                    HttpSession session)
+                                                    BasketDTO basketDTO,
+                                                    int discount)
                                                     throws OrderCreationErrorException {
-        BasketDTO basketDTO = (BasketDTO) session.getAttribute("currentBasket");
+       // BasketDTO basketDTO = (BasketDTO) session.getAttribute("currentBasket");
         try {
             Flower flower = flowerDaoService.getFlower(flowerId);
             if(flower.getAmount() < amount )
                 throw new OrderCreationErrorException("AMOUNT!");
-            int discount = ((UserDTO)session.getAttribute("currentUser")).getDiscount();
+         //   int discount = ((UserDTO)session.getAttribute("currentUser")).getDiscount();
             basketBusinessService.addOrderItem(new OrderItem(flower,amount), basketDTO);
             basketDTO.setPrice( basketDTO.getPrice().multiply(BigDecimal.valueOf((float)(100-discount)/100)).setScale(2, BigDecimal.ROUND_HALF_DOWN));
         } catch (FlowerNotFoundException e) {
@@ -48,8 +49,7 @@ public class OrderBusinessService {
         }
     }
 
-    public void deleteItemFromBasket(final Long flowerId, HttpSession session){
-        BasketDTO basketDTO = (BasketDTO) session.getAttribute("currentBasket");
+    public void deleteItemFromBasket(final Long flowerId, BasketDTO basketDTO){
         basketBusinessService.deleteOrderItemByFlowerId(flowerId, basketDTO);
     }
 

@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 public class UserBusinessServiceImpl implements UserBusinessService {
 
     private final BigDecimal INIT_MONEY = BigDecimal.valueOf(2000);
+    private final String FILE_DESTINATION = "C:\\Ferret56\\IdeaProjects\\FlowerShopEE\\xml\\";
 
     @Autowired
     private UserDaoService userDaoService;
@@ -42,34 +43,31 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 throw new UserLoginException("Wrong username or password!");
             return currentUser;
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
             throw new UserLoginException("Wrong username or password!");
         }
     }
 
     @Override
     @Transactional
-    public User register(User user, String confirm_password) throws UserRegisterException {
+    public User register(User user, String confirmPassword) throws UserRegisterException {
         try {
-            userValidator.validate(user, confirm_password);
+            userValidator.validate(user, confirmPassword);
             user.setMoney(INIT_MONEY);
             user.setDiscount(0);
             user.setRole(UserRoles.USER);
             userDaoService.addUser(user);
             try {
-                xmlConverter.convertUser(user,"C:\\Ferret56\\IdeaProjects\\FlowerShopEE\\xml\\User.xml");
-                jmsProducer.sendFileAsBytesMessage(new File(("C:\\Ferret56\\IdeaProjects\\FlowerShopEE\\xml\\User.xml")));
+                xmlConverter.convertUser(user,FILE_DESTINATION + "User" + user.getId() + ".xml");
+                jmsProducer.sendFileAsBytesMessage(new File((FILE_DESTINATION + "User" + user.getId() + ".xml")));
 
             } catch (JAXBException | IOException | JMSException e) {
                 e.printStackTrace();
             }
             return user;
         } catch (ValidatorException e) {
-            e.printStackTrace();
             throw new UserRegisterException(e.getMessage());
         }
 
     }
-
 
 }

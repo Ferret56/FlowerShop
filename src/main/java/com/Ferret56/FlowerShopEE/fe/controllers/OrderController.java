@@ -43,7 +43,9 @@ public class OrderController {
                                                       HttpSession session){
         if(id!=null && amount!=null && amount>=0) {
             try {
-                orderBusinessService.saveItemToBasket(id,amount,session);
+                BasketDTO basketDTO = (BasketDTO) session.getAttribute("currentBasket");
+                UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
+                orderBusinessService.saveItemToBasket(id,amount, basketDTO, userDTO.getDiscount());
             } catch (OrderCreationErrorException e) {
                 LOG.error("Order creation error! "  + e.getMessage());
             }
@@ -53,7 +55,8 @@ public class OrderController {
 
     @GetMapping("userPage/basket/remove/{id}")
     public String removeItem(@PathVariable("id")Long flowerId, HttpSession session ){
-        orderBusinessService.deleteItemFromBasket(flowerId, session);
+        BasketDTO basketDTO = (BasketDTO) session.getAttribute("currentBasket");
+        orderBusinessService.deleteItemFromBasket(flowerId, basketDTO);
         return"redirect:/userPage";
     }
 

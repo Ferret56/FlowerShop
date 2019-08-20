@@ -6,5 +6,5 @@ import com.Ferret56.FlowerShopEE.be.entity.User.User;
 
 public interface UserBusinessService {
     User login(User user) throws UserLoginException;
-    User register(User user, String confirm_password) throws UserRegisterException;
+    User register(User user, String confirmPassword) throws UserRegisterException;
 }
