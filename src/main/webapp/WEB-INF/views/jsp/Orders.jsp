@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.Ferret56.FlowerShopEE.be.entity.Order.OrderStatus" %>
+<%@ page import="com.Ferret56.FlowerShopEE.be.entity.order.OrderStatusEnum" %>
 <%@ page isELIgnored="false" %>
 <html>
 <head>
@@ -55,11 +55,11 @@
 <div class="orderBox">
     <c:forEach var="order" items="${ordersList}">
         <div class="order">
-            <h4>Order № ${order.id}</h4>
+            <h4>order № ${order.id}</h4>
             <h4>Price: ${order.cost}$</h4>
             <table border="1">
                 <tr>
-                    <th>Flower</th>
+                    <th>flower</th>
                     <th>Count</th>
                 </tr>
                 <c:forEach var="item" items="${order.orderItemList}">
