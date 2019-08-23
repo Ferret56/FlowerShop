@@ -1,9 +1,7 @@
 package com.Ferret56.FlowerShopEE.be.jms;
 
-import com.Ferret56.FlowerShopEE.be.access.userdaoservice.UserDaoService;
-import com.Ferret56.FlowerShopEE.be.business.orderbusinessservice.OrderBusinessService;
-import com.Ferret56.FlowerShopEE.be.business.userbusinessservice.UserBusinessService;
-import com.Ferret56.FlowerShopEE.be.business.userbusinessservice.exp.UserNotFoundException;
+import com.Ferret56.FlowerShopEE.be.access.user.UserDaoService;
+import com.Ferret56.FlowerShopEE.be.business.user.exp.UserNotFoundException;
 import com.Ferret56.FlowerShopEE.be.marshalling.XmlConverter;
 import com.Ferret56.FlowerShopEE.fe.dto.DiscountDTO;
 import org.apache.activemq.ActiveMQConnection;

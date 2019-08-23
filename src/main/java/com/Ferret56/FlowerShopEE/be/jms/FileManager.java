@@ -1,4 +1,4 @@
-package com.Ferret56.FlowerShopEE.be.Jms;
+package com.Ferret56.FlowerShopEE.be.jms;
 
 import java.io.File;
 import java.io.FileWriter;
