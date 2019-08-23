@@ -1,15 +1,18 @@
-package com.Ferret56.FlowerShopEE.be.business.UserBusinessService;
+package com.Ferret56.FlowerShopEE.be.business.user;
 
-import com.Ferret56.FlowerShopEE.be.Jms.JmsProducer;
-import com.Ferret56.FlowerShopEE.be.Marshalling.XmlConverter;
-import com.Ferret56.FlowerShopEE.be.access.UserDaoService.UserDaoService;
-import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.exp.UserLoginException;
-import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.exp.UserNotFoundException;
-import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.exp.UserRegisterException;
-import com.Ferret56.FlowerShopEE.be.entity.User.User;
-import com.Ferret56.FlowerShopEE.be.entity.User.UserRoles;
+import com.Ferret56.FlowerShopEE.be.jms.JmsProvider;
+import com.Ferret56.FlowerShopEE.be.marshalling.XmlConverter;
+import com.Ferret56.FlowerShopEE.be.access.user.UserDaoService;
+import com.Ferret56.FlowerShopEE.be.business.user.exp.UserLoginException;
+import com.Ferret56.FlowerShopEE.be.business.user.exp.UserNotFoundException;
+import com.Ferret56.FlowerShopEE.be.business.user.exp.UserRegisterException;
+import com.Ferret56.FlowerShopEE.be.entity.user.User;
+import com.Ferret56.FlowerShopEE.be.entity.user.UserRoleEnum;
 import com.Ferret56.FlowerShopEE.be.validation.UserValidator;
 import com.Ferret56.FlowerShopEE.be.validation.ValidatorException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,8 @@ import java.math.BigDecimal;
 @Service
 public class UserBusinessServiceImpl implements UserBusinessService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserBusinessServiceImpl.class);
+
     private final BigDecimal INIT_MONEY = BigDecimal.valueOf(2000);
     private final String FILE_DESTINATION = "C:\\Ferret56\\IdeaProjects\\FlowerShopEE\\xml\\";
 
@@ -31,7 +36,9 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     private UserDaoService userDaoService;
     @Autowired
     private UserValidator userValidator;
-    private JmsProducer jmsProducer = new JmsProducer();
+    @Autowired
+    private JmsProvider jmsProvider;
+
 
     private XmlConverter xmlConverter = new XmlConverter();
 
@@ -54,14 +61,15 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             userValidator.validate(user, confirmPassword);
             user.setMoney(INIT_MONEY);
             user.setDiscount(0);
-            user.setRole(UserRoles.USER);
+            user.setRole(UserRoleEnum.USER);
             userDaoService.addUser(user);
             try {
-                xmlConverter.convertUser(user,FILE_DESTINATION + "User" + user.getId() + ".xml");
-                jmsProducer.sendFileAsBytesMessage(new File((FILE_DESTINATION + "User" + user.getId() + ".xml")));
+                xmlConverter.convertUser(user,FILE_DESTINATION + "user" + user.getId() + ".xml");
+               // jmsProducer.sendFileAsBytesMessage(new File((FILE_DESTINATION + "user" + user.getId() + ".xml")));
+                jmsProvider.sendByteMessage(new File((FILE_DESTINATION + "user" + user.getId() + ".xml")));
 
             } catch (JAXBException | IOException | JMSException e) {
-                e.printStackTrace();
+                LOG.error("Jms runtime error :   "  + e.getMessage());
             }
             return user;
         } catch (ValidatorException e) {

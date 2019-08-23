@@ -1,8 +1,8 @@
-package com.Ferret56.FlowerShopEE.be.dao.OrderDao;
+package com.Ferret56.FlowerShopEE.be.dao.order;
 
 
-import com.Ferret56.FlowerShopEE.be.entity.Order.Order;
-import com.Ferret56.FlowerShopEE.be.entity.Order.OrderStatus;
+import com.Ferret56.FlowerShopEE.be.entity.order.Order;
+import com.Ferret56.FlowerShopEE.be.entity.order.OrderStatusEnum;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,7 +10,6 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -50,7 +49,7 @@ public class OrderDaoImpl implements OrderDao {
         return query.getResultList();
     }
 
-    public List<Order> getAllOrdersByUserId(Long userId, OrderStatus status){
+    public List<Order> getAllOrdersByUserId(Long userId, OrderStatusEnum status){
         EntityManager em = Persistence
                 .createEntityManagerFactory("data")
                 .createEntityManager();
