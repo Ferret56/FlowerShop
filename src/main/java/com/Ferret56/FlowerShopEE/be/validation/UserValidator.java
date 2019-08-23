@@ -1,7 +1,7 @@
 package com.Ferret56.FlowerShopEE.be.validation;
 
-import com.Ferret56.FlowerShopEE.be.access.UserDaoService.UserDaoService;
-import com.Ferret56.FlowerShopEE.be.entity.User.User;
+import com.Ferret56.FlowerShopEE.be.access.user.UserDaoService;
+import com.Ferret56.FlowerShopEE.be.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
-package com.Ferret56.FlowerShopEE.be.entity.Order;
+package com.Ferret56.FlowerShopEE.be.entity.order;
 
 
-import com.Ferret56.FlowerShopEE.be.entity.User.User;
+import com.Ferret56.FlowerShopEE.be.entity.user.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -39,11 +39,11 @@ public class Order {
     private BigDecimal cost;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatusEnum status;
 
     public Order(User user, List<OrderItem> orderItemList, Date orderCreateDate,
                                            Date orderCloseDate, BigDecimal cost,
-                                                              OrderStatus status) {
+                                                              OrderStatusEnum status) {
         this.user = user;
         this.orderItemList = orderItemList;
         this.orderCreateDate = orderCreateDate;
@@ -112,11 +112,11 @@ public class Order {
         this.cost = cost;
     }
 
-    public OrderStatus getStatus() {
+    public OrderStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(OrderStatusEnum status) {
         this.status = status;
     }
 }

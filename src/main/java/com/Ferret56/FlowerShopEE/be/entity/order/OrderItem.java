@@ -1,7 +1,7 @@
-package com.Ferret56.FlowerShopEE.be.entity.Order;
+package com.Ferret56.FlowerShopEE.be.entity.order;
 
 
-import com.Ferret56.FlowerShopEE.be.entity.Flower.Flower;
+import com.Ferret56.FlowerShopEE.be.entity.flower.Flower;
 
 import javax.persistence.*;
 
@@ -25,7 +25,7 @@ public class OrderItem {
     private int amount;
 
 
-    public OrderItem( Flower flower, int amount) {
+    public OrderItem(Flower flower, int amount) {
         this.flower = flower;
         this.amount = amount;
     }

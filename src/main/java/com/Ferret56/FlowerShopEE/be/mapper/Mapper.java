@@ -1,4 +1,4 @@
-package com.Ferret56.FlowerShopEE.be.Mapper;
+package com.Ferret56.FlowerShopEE.be.mapper;
 
 import org.dozer.DozerBeanMapper;
 

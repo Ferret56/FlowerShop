@@ -1,6 +1,6 @@
-package com.Ferret56.FlowerShopEE.be.Marshalling;
+package com.Ferret56.FlowerShopEE.be.marshalling;
 
-import com.Ferret56.FlowerShopEE.be.entity.User.User;
+import com.Ferret56.FlowerShopEE.be.entity.user.User;
 import com.Ferret56.FlowerShopEE.fe.dto.DiscountDTO;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
