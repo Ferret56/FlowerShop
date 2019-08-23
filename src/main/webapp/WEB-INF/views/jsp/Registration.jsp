@@ -9,6 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page isELIgnored="false" %>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <html>
 <head>
     <meta charset="utf-8">
@@ -22,7 +23,7 @@
     <form:form method="post" modelAttribute="userDTO">
         <div class="inputs">
             <h3 class="Account">Create new account</h3>
-            <input type="text" name="username" placeholder="username">
+            <input type="text" id="usr"  name="username" placeholder="username" onchange="isExist()">
             <input type="text" name="phone" placeholder="phone number">
             <input type="email" name="email" placeholder="email">
             <input type="password" name="password" placeholder="password">
@@ -38,5 +39,24 @@
         </div>
     </form:form>
 </div>
+<script>
+    function isExist() {
+        $.ajax({
+            type: "GET",
+            url : "http://localhost:8080/FlowerShop/rest/find/" + document.getElementById("usr").value,
+            dataType:"text",
+            success : function (ans) {
+                if(ans === "true"){
+                    document.getElementById("usr").style.color="Red";
+                }
+                else
+                    document.getElementById("usr").style.color = "Black";
+
+            }
+
+        });
+    }
+</script>
 </body>
+
 </html>
