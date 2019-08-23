@@ -1,8 +1,8 @@
-package com.Ferret56.FlowerShopEE.be.access.OrderDaoService;
+package com.Ferret56.FlowerShopEE.be.access.order;
 
-import com.Ferret56.FlowerShopEE.be.dao.OrderDao.OrderDao;
-import com.Ferret56.FlowerShopEE.be.entity.Order.Order;
-import com.Ferret56.FlowerShopEE.be.entity.Order.OrderStatus;
+import com.Ferret56.FlowerShopEE.be.dao.order.OrderDao;
+import com.Ferret56.FlowerShopEE.be.entity.order.Order;
+import com.Ferret56.FlowerShopEE.be.entity.order.OrderStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -29,7 +29,7 @@ public class OrderDaoServiceImpl implements OrderDaoService {
     }
 
     @Override
-    public List<Order> getAllOrdersByUserId(Long userId, OrderStatus status) {
+    public List<Order> getAllOrdersByUserId(Long userId, OrderStatusEnum status) {
         return dao.getAllOrdersByUserId(userId, status);
     }
 

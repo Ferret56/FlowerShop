@@ -1,6 +1,6 @@
-package com.Ferret56.FlowerShopEE.be.dao.UserDao;
+package com.Ferret56.FlowerShopEE.be.dao.user;
 
-import com.Ferret56.FlowerShopEE.be.entity.User.User;
+import com.Ferret56.FlowerShopEE.be.entity.user.User;
 
 
 import org.springframework.stereotype.Repository;
