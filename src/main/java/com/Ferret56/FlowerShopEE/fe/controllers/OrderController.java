@@ -1,16 +1,15 @@
 package com.Ferret56.FlowerShopEE.fe.controllers;
 
 
-import com.Ferret56.FlowerShopEE.be.Mapper.Mapper;
-import com.Ferret56.FlowerShopEE.be.access.UserDaoService.UserDaoService;
-import com.Ferret56.FlowerShopEE.be.business.OrderBusinessService.OrderBusinessService;
-import com.Ferret56.FlowerShopEE.be.access.OrderDaoService.OrderDaoService;
-import com.Ferret56.FlowerShopEE.be.business.OrderBusinessService.exp.OrderCreationErrorException;
-import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.UserBusinessService;
-import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.exp.UserNotFoundException;
-import com.Ferret56.FlowerShopEE.be.entity.Order.Order;
-import com.Ferret56.FlowerShopEE.be.entity.Order.OrderStatus;
-import com.Ferret56.FlowerShopEE.be.entity.User.User;
+import com.Ferret56.FlowerShopEE.be.mapper.Mapper;
+import com.Ferret56.FlowerShopEE.be.access.user.UserDaoService;
+import com.Ferret56.FlowerShopEE.be.business.order.OrderBusinessService;
+import com.Ferret56.FlowerShopEE.be.access.order.OrderDaoService;
+import com.Ferret56.FlowerShopEE.be.business.order.exp.OrderCreationErrorException;
+import com.Ferret56.FlowerShopEE.be.business.user.exp.UserNotFoundException;
+import com.Ferret56.FlowerShopEE.be.entity.order.Order;
+import com.Ferret56.FlowerShopEE.be.entity.order.OrderStatusEnum;
+import com.Ferret56.FlowerShopEE.be.entity.user.User;
 import com.Ferret56.FlowerShopEE.fe.dto.BasketDTO;
 
 import com.Ferret56.FlowerShopEE.fe.dto.UserDTO;
@@ -44,30 +43,31 @@ public class OrderController {
     private Mapper mapper = new Mapper();
 
     @PostMapping("/userPage")
-    public String saveOrderSession(@RequestParam("FlowerId")Long id,
-                                   @RequestParam("Amount")Integer amount,
-                                                      HttpSession session){
+    public String saveOrderToBasket(@RequestParam("FlowerId")Long id,
+                                    @RequestParam("Amount")Integer amount,
+                                    HttpSession session, RedirectAttributes redirectAttributes){
         if(id!=null && amount!=null && amount>=0) {
             try {
                 BasketDTO basketDTO = (BasketDTO) session.getAttribute("currentBasket");
                 UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
                 orderBusinessService.saveItemToBasket(id,amount, basketDTO, userDTO.getDiscount());
             } catch (OrderCreationErrorException e) {
-                LOG.error("Order creation error! "  + e.getMessage());
+                LOG.error("order creation error! "  + e.getMessage());
+                redirectAttributes.addFlashAttribute("informationMessage", e.getMessage());
             }
         }
         return "redirect:/userPage";
     }
 
     @GetMapping("userPage/basket/remove/{id}")
-    public String removeItem(@PathVariable("id")Long flowerId, HttpSession session ){
+    public String removeItemFromBasket(@PathVariable("id")Long flowerId, HttpSession session ){
         BasketDTO basketDTO = (BasketDTO) session.getAttribute("currentBasket");
         orderBusinessService.deleteItemFromBasket(flowerId, basketDTO);
         return"redirect:/userPage";
     }
 
     @GetMapping("userPage/clearOrder")
-    public String clearOrder(HttpSession session){
+    public String clearBasket(HttpSession session){
         BasketDTO basketDTO = (BasketDTO) session.getAttribute("currentBasket");
         basketDTO.clear();
         return "redirect:/userPage";
@@ -80,7 +80,7 @@ public class OrderController {
           orderBusinessService.createOrder(new Order(mapper.map(currentUser,User.class),
                                                            basketDTO.getOrderItemList(),
                                                            basketDTO.getPrice()),
-                                                           OrderStatus.CREATED);
+                                                           OrderStatusEnum.CREATED);
           basketDTO.clear();
           return "redirect:/viewUnpaidOrders";
     }
@@ -93,10 +93,10 @@ public class OrderController {
             orderBusinessService.buyOrder(orderDaoService.getOrderById(id), mapper.map(userDTO,User.class));
             userDTO.setMoney(userDaoService.findUserById(userDTO.getId()).getMoney());
         } catch (OrderCreationErrorException e) {
-            LOG.error("Order creation error! "  + e.getMessage() );
+            LOG.error("order creation error! "  + e.getMessage() );
             redirectAttributes.addFlashAttribute("errorMsg", e.getMessage());
         } catch (UserNotFoundException e) {
-            LOG.error("Error");
+            LOG.error("Error while finding user" + e.getMessage());
         }
 
         return "redirect:/viewUnpaidOrders";

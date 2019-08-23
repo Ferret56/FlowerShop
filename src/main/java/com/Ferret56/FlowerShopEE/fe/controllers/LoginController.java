@@ -1,10 +1,10 @@
 package com.Ferret56.FlowerShopEE.fe.controllers;
 
-import com.Ferret56.FlowerShopEE.be.Mapper.Mapper;
-import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.UserBusinessService;
-import com.Ferret56.FlowerShopEE.be.business.UserBusinessService.exp.UserLoginException;
-import com.Ferret56.FlowerShopEE.be.entity.User.User;
-import com.Ferret56.FlowerShopEE.be.entity.User.UserRoles;
+import com.Ferret56.FlowerShopEE.be.mapper.Mapper;
+import com.Ferret56.FlowerShopEE.be.business.user.UserBusinessService;
+import com.Ferret56.FlowerShopEE.be.business.user.exp.UserLoginException;
+import com.Ferret56.FlowerShopEE.be.entity.user.User;
+import com.Ferret56.FlowerShopEE.be.entity.user.UserRoleEnum;
 import com.Ferret56.FlowerShopEE.fe.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+
 
     @Autowired
     private UserBusinessService userBusinessService;
@@ -45,7 +46,7 @@ public class LoginController {
         try {
             User currentUser = userBusinessService.login(user);
             session.setAttribute("currentUser", mapper.map(currentUser, UserDTO.class));
-            if(currentUser.getRole().equals(UserRoles.ADMIN))
+            if(currentUser.getRole().equals(UserRoleEnum.ADMIN))
                 return "redirect:/admin";
 
             return "redirect:/userPage";

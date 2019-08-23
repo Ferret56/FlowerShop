@@ -1,16 +1,18 @@
 package com.Ferret56.FlowerShopEE.fe.controllers;
 
-import com.Ferret56.FlowerShopEE.be.Mapper.Mapper;
-import com.Ferret56.FlowerShopEE.be.business.FlowerBusinessService.FlowerBusinessService;
-import com.Ferret56.FlowerShopEE.be.access.OrderDaoService.OrderDaoService;
-import com.Ferret56.FlowerShopEE.be.entity.Order.Order;
-import com.Ferret56.FlowerShopEE.be.entity.Order.OrderStatus;
+import com.Ferret56.FlowerShopEE.be.access.flower.FlowerDaoService;
+import com.Ferret56.FlowerShopEE.be.mapper.Mapper;
+import com.Ferret56.FlowerShopEE.be.business.flower.FlowerBusinessService;
+import com.Ferret56.FlowerShopEE.be.access.order.OrderDaoService;
+import com.Ferret56.FlowerShopEE.be.entity.order.Order;
+import com.Ferret56.FlowerShopEE.be.entity.order.OrderStatusEnum;
 
+import com.Ferret56.FlowerShopEE.fe.catalog.Catalog;
 import com.Ferret56.FlowerShopEE.fe.dto.BasketDTO;
 import com.Ferret56.FlowerShopEE.fe.dto.FlowerDTO;
 import com.Ferret56.FlowerShopEE.fe.dto.UserDTO;
 
-import com.Ferret56.FlowerShopEE.fe.catalogFilter.FlowerFilterType;
+import com.Ferret56.FlowerShopEE.fe.catalog.FlowerFilterTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,15 +21,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
 public class UserController {
 
+
     @Autowired
     private OrderDaoService orderDaoService;
     @Autowired
     private FlowerBusinessService flowerBusinessService;
+    @Autowired
+    private FlowerDaoService flowerDaoService;
     private Mapper mapper = new Mapper();
 
     @GetMapping("/userPage")
@@ -36,12 +42,14 @@ public class UserController {
         if(session.getAttribute("currentBasket")==null)
                session.setAttribute("currentBasket", new BasketDTO());
 
-        FlowerFilterType flowerFilterType = (FlowerFilterType)session.getAttribute("flowerFilter");
-        if(flowerFilterType == null)
-             session.setAttribute("flowerFilter", FlowerFilterType.DEFAULT );
+        Catalog flowerCatalog = (Catalog) session.getAttribute("catalog");
+        if(flowerCatalog == null)
+            flowerCatalog = new Catalog();
 
-        model.addAttribute("flowerList", mapper.mapList(flowerBusinessService.getFlowers((FlowerFilterType)session
-                                                        .getAttribute("flowerFilter"), session), FlowerDTO.class));
+         flowerBusinessService.fillCatalog(flowerCatalog);
+         session.setAttribute("catalog", flowerCatalog);
+
+        model.addAttribute("flowerList", mapper.mapList(flowerCatalog.getFlowers(), FlowerDTO.class));
         return "UserPage";
     }
 
@@ -61,39 +69,53 @@ public class UserController {
     @PostMapping("userPage/filterByName")
     public String filterByName(@ModelAttribute("flowerName")String flowerName,
                                                           HttpSession session){
-        session.setAttribute("flowerName", flowerName);
-        session.setAttribute("flowerFilter", FlowerFilterType.BY_NAME);
+
+        Catalog catalog = (Catalog) session.getAttribute("catalog");
+        catalog.setFlowerFilterTypeEnum(FlowerFilterTypeEnum.BY_NAME);
+        catalog.setName(flowerName);
+        flowerBusinessService.fillCatalog(catalog);
+
         return "redirect:/userPage";
     }
 
     @PostMapping("filterByRange")
-    public String filterByRange(@ModelAttribute("From") String r1,
+    public String filterByRange(@ModelAttribute("From")String r1,
                                 @ModelAttribute("To")String r2,
                                 HttpSession session){
         //TODO See parameters r1 and r2 (BigDecimal  ?????)
-        session.setAttribute("From", r1);
-        session.setAttribute("To", r2);
-        session.setAttribute("flowerFilter", FlowerFilterType.BY_RANGE);
+
+        Catalog flowerCatalog = (Catalog) session.getAttribute("catalog");
+        if(!r1.equals("") && !r2.equals("")) {
+            flowerCatalog.setStartPrice(new BigDecimal(r1));
+            flowerCatalog.setFinalPrice(new BigDecimal(r2));
+            flowerCatalog.setFlowerFilterTypeEnum(FlowerFilterTypeEnum.BY_RANGE);
+        }
+        else
+            flowerCatalog.setFlowerFilterTypeEnum(FlowerFilterTypeEnum.DEFAULT);
+
+
         return "redirect:/userPage";
     }
 
     @GetMapping("userPage/resetFilter")
     public String resetFilter(HttpSession session){
-        session.setAttribute("flowerFilter", FlowerFilterType.DEFAULT);
+        Catalog flowerCatalog = (Catalog) session.getAttribute("catalog");
+        flowerCatalog.setFlowerFilterTypeEnum(FlowerFilterTypeEnum.DEFAULT);
+
         return "redirect:/userPage";
     }
 
     @GetMapping("/viewUnpaidOrders")
     public String viewUnpaidOrders(Model model,HttpSession session){
         UserDTO currentUser = (UserDTO)session.getAttribute("currentUser");
-        List<Order> orderList = orderDaoService.getAllOrdersByUserId(currentUser.getId(), OrderStatus.CREATED);
+        List<Order> orderList = orderDaoService.getAllOrdersByUserId(currentUser.getId(), OrderStatusEnum.CREATED);
         model.addAttribute("ordersList", orderList);
         return "UnpaidOrders";
 
     }
     @GetMapping("/back")
     public String back(HttpSession session){
-        session.setAttribute("flowerFilter", FlowerFilterType.DEFAULT);
+        session.setAttribute("flowerFilter", FlowerFilterTypeEnum.DEFAULT);
         return "redirect:/userPage";
     }
 

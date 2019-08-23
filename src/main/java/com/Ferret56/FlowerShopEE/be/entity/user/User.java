@@ -1,8 +1,6 @@
-package com.Ferret56.FlowerShopEE.be.entity.User;
+package com.Ferret56.FlowerShopEE.be.entity.user;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,12 +38,12 @@ public class User {
     @NotNull
     @Column(name = "role")
     @Enumerated(EnumType.ORDINAL)
-    private UserRoles role;
+    private UserRoleEnum role;
 
     public User(String username, String password,
                 String email,String phone,
                 BigDecimal money,int discount,
-                UserRoles role) {
+                UserRoleEnum role) {
 
         this.username = username;
         this.password = password;
@@ -99,11 +97,11 @@ public class User {
         this.phone = phone;
     }
 
-    public UserRoles getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(UserRoles role) {
+    public void setRole(UserRoleEnum role) {
         this.role = role;
     }
 
@@ -124,7 +122,7 @@ public class User {
     }
     @Override
     public String toString() {
-        return "User{" +
+        return "user{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

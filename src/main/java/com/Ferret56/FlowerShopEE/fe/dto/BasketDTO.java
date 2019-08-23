@@ -1,6 +1,6 @@
 package com.Ferret56.FlowerShopEE.fe.dto;
 
-import com.Ferret56.FlowerShopEE.be.entity.Order.OrderItem;
+import com.Ferret56.FlowerShopEE.be.entity.order.OrderItem;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.Ferret56.FlowerShopEE.fe.dto;
 
-import com.Ferret56.FlowerShopEE.be.entity.User.UserRoles;
+import com.Ferret56.FlowerShopEE.be.entity.user.UserRoleEnum;
 import java.math.BigDecimal;
 
 public class UserDTO {
@@ -12,14 +12,14 @@ public class UserDTO {
     private String phone;
     private BigDecimal money;
     private int discount;
-    private UserRoles role;
+    private UserRoleEnum role;
 
     public UserDTO() {}
 
     public UserDTO(Long id, String username, String password,
                    String confirm_password,String email,
                    String phone,BigDecimal money, int discount,
-                   UserRoles role) {
+                   UserRoleEnum role) {
 
         this.id = id;
         this.username = username;
@@ -96,11 +96,11 @@ public class UserDTO {
         this.discount = discount;
     }
 
-    public UserRoles getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(UserRoles role) {
+    public void setRole(UserRoleEnum role) {
         this.role = role;
     }
 

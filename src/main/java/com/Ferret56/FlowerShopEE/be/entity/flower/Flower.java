@@ -1,4 +1,4 @@
-package com.Ferret56.FlowerShopEE.be.entity.Flower;
+package com.Ferret56.FlowerShopEE.be.entity.flower;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
